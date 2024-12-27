@@ -20,21 +20,12 @@ taskForm.addEventListener("submit", (e) => {
   saveTask(task);
 
   displayTask(task);
-
-
 })
 
 function saveTask(task) {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   tasks.push(task);
   localStorage.setItem("tasks", JSON.stringify(tasks));  
-
-  console.log(task);
-  console.log(saveTask);
-  console.log(localStorage.getItem("tasks"));
-  
-  
-  
 }
 
 function loadTasks() {
@@ -43,7 +34,12 @@ function loadTasks() {
 }
 
 function displayTask(task) {
-  
+  const taskItem = document.createElement("div");
+  taskItem.classList.add("task-item");
+  taskItem.innerHTML = `${task.text} ${task.time} 
+        <button >Edit</button>
+        <button >Delete</button>`;
+        taskList.appendChild(taskItem);
   // handling current date issue
   // add task below date section
   // 
