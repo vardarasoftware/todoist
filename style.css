@@ -8,17 +8,42 @@ body {
 
 
 #btn {
-  background-color:rgb(189, 194, 189); 
-  color: white;             
+  background-color:rgb(55, 150, 12); 
+  color: black;             
   border: none;        
-  padding: 14px px;
-  font-size: 16px;          
-  border-radius: 2px;    
+  padding: 5px 15px; 
+  font-size: 15px;          
+  border-radius: 3px;    
   cursor: pointer;          
   transition: background-color 0.3s ease;
   margin: 2px;
 }
 
 #btn:hover {
-  background-color:rgb(110, 115, 111); 
+  background-color:rgb(4, 126, 13); 
+}
+
+#task {
+  font-size: 15px;
+  padding: 5px 10px;
+  margin: 2px;
+  
+}
+
+#date {
+  font-size: 15px;
+  padding: 5px 10px;
+  margin: 2px;
+}
+
+#time {
+  font-size: 15px;
+  padding: 5px 10px;
+  margin: 2px;
+}
+
+#task-form {
+  padding: 5px;
+  margin: 2px;
+  
 }
