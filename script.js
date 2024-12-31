@@ -13,7 +13,10 @@ taskForm.addEventListener("submit", (e) => {
   const taskDate = dateInput.value;
   const taskTime = timeInput.value;
 
-  if (!taskText || !taskDate || !taskTime) return;
+  if (!taskText || !taskDate || !taskTime) {
+    alert("Please enter a task and date!");
+    return;
+  }
 
   const task = { text: taskText, date: taskDate, time: taskTime };
 
@@ -34,6 +37,21 @@ function loadTasks() {
 }
 
 function displayTask(task) {
+
+  let dateSection = document.querySelector(`[data-date="${task.date}"]`);
+
+
+  if (!dateSection) {
+    dateSection = document.createElement("div");
+    dateSection.classList.add("date-section");
+    dateSection.setAttribute("data-date", task.date);
+
+    const dateHeading = document.createElement("h3");
+    dateHeading.textContent = new Date(task.date).toLocaleDateString("en-GB");
+    dateSection.appendChild(dateHeading);
+
+    taskList.appendChild(dateSection);
+  }
   const taskItem = document.createElement("div");
   taskItem.classList.add("task-item");
   taskItem.innerHTML = `${task.text} ${task.time} 
