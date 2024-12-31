@@ -14,14 +14,13 @@ taskForm.addEventListener("submit", (e) => {
   const taskTime = timeInput.value;
 
   if (!taskText || !taskDate || !taskTime) {
-    alert("Please enter a task and date!");
+    alert("Please fill in all fields.");
     return;
   }
 
   const task = { text: taskText, date: taskDate, time: taskTime };
 
   saveTask(task);
-
   displayTask(task);
 
   taskInput.value = "";
