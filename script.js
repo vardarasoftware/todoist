@@ -39,9 +39,19 @@ function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   const currentDate = new Date().toISOString().split("T")[0];
 
+  const dueTasks = tasks.filter(task => task.date < currentDate);
   const todayTasks = tasks.filter(task => task.date === currentDate);
+  const upcomingTasks = tasks.filter(task => task.date >= currentDate);
 
   taskList.innerHTML = "";
+
+  if (dueTasks.length) {
+    const dueHeading = document.createElement("h2");
+    dueHeading.textContent = "Due Tasks";
+    taskList.appendChild(dueHeading);
+
+    dueTasks.forEach(tasks => displayTask(tasks));
+  }
 
   if (todayTasks.length) {
     const todayHeading = document.createElement("h2");
@@ -51,7 +61,13 @@ function loadTasks() {
     todayTasks.forEach(task => displayTask(task));
   }
 
-  
+  if (upcomingTasks.length) {
+    const upcomingHeading = document.createElement("h2");
+    upcomingHeading.textContent = "Upcoming Tasks";
+    taskList.appendChild(upcomingHeading);
+
+    upcomingTasks.forEach(task => displayTask(task));
+  }
 }
 
 function displayTask(task) {
