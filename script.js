@@ -71,6 +71,13 @@ function loadTasks() {
 
 function displayTask(task) {
   
+  const [hour, minute] = task.time.split(":");
+  const taskTime = new Date();
+  taskTime.setHours(hour, minute);
+
+  const options = { hour: '2-digit', minute: '2-digit' };
+  const formattedTime = taskTime.toLocaleTimeString('en-US', options)
+
   let dateSection = document.querySelector(`[data-date="${task.date}"]`);
 
   if (!dateSection) {
@@ -87,7 +94,7 @@ function displayTask(task) {
 
   const taskItem = document.createElement("div");
   taskItem.classList.add("task-item");
-  taskItem.innerHTML = `${task.text} ${task.time} 
+  taskItem.innerHTML = `${task.text} ${formattedTime} 
       <button class="edit-btn">Edit</button>
       <button class="delete-btn">Delete</button>`;
         
