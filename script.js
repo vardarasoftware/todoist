@@ -23,6 +23,10 @@ taskForm.addEventListener("submit", (e) => {
   saveTask(task);
 
   displayTask(task);
+
+  taskInput.value = "";
+  dateInput.value = "";
+  timeInput.value = "";
 })
 
 function saveTask(task) {
