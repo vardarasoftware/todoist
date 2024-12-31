@@ -101,3 +101,8 @@ function displayTask(task) {
     dateSection.appendChild(taskItem);
 
 }
+
+function deleteTask() {
+  document.onclick('delete-btn')
+  
+}
