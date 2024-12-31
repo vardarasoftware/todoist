@@ -4,6 +4,9 @@ body {
   justify-content: center;
   align-items: center;
   margin: 50px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f8fc;
+  text-color: #333;
 }
 
 
