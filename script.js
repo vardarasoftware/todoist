@@ -37,13 +37,26 @@ function saveTask(task) {
 
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks.forEach(displayTask);
+  const currentDate = new Date().toISOString().split("T")[0];
+
+  const todayTasks = tasks.filter(task => task.date === currentDate);
+
+  taskList.innerHTML = "";
+
+  if (todayTasks.length) {
+    const todayHeading = document.createElement("h2");
+    todayHeading.textContent = "Today";
+    taskList.appendChild(todayHeading);
+
+    todayTasks.forEach(task => displayTask(task));
+  }
+
+  
 }
 
 function displayTask(task) {
-
+  
   let dateSection = document.querySelector(`[data-date="${task.date}"]`);
-
 
   if (!dateSection) {
     dateSection = document.createElement("div");
@@ -56,13 +69,13 @@ function displayTask(task) {
 
     taskList.appendChild(dateSection);
   }
+
   const taskItem = document.createElement("div");
   taskItem.classList.add("task-item");
   taskItem.innerHTML = `${task.text} ${task.time} 
-        <button >Edit</button>
-        <button >Delete</button>`;
-        taskList.appendChild(taskItem);
-  // handling current date issue
-  // add task below date section
-  // 
+      <button class="edit-btn">Edit</button>
+      <button class="delete-btn">Delete</button>`;
+        
+    dateSection.appendChild(taskItem);
+
 }
