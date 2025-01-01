@@ -95,14 +95,27 @@ function displayTask(task) {
   const taskItem = document.createElement("div");
   taskItem.classList.add("task-item");
   taskItem.innerHTML = `${task.text} ${formattedTime} 
-      <button class="edit-btn">Edit</button>
-      <button class="delete-btn">Delete</button>`;
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>`;
         
-    dateSection.appendChild(taskItem);
+  dateSection.appendChild(taskItem);
 
+  const editBtn = taskItem.querySelector(".edit-btn");
+  const deleteBtn = taskItem.querySelector(".delete-btn");
+
+  editBtn.addEventListener("click", () => editTask(task, taskItem));
+  deleteBtn.addEventListener("click", () => deleteTask(task, taskItem));
 }
 
-function deleteTask() {
-  document.onclick('delete-btn')
-  
+function deleteTask(task, taskItem) {
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  const updatedTasks = tasks.filter(
+    (taskToCheck) => taskToCheck.text !== task.text || taskToCheck.date !== task.date || taskToCheck.time !== task.time
+  );
+  localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+  taskItem.remove();
 }
+
+
+
