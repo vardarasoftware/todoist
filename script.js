@@ -109,13 +109,77 @@ function displayTask(task) {
 
 function deleteTask(task, taskItem) {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
   const updatedTasks = tasks.filter(
-    (taskToCheck) => taskToCheck.text !== task.text || taskToCheck.date !== task.date || taskToCheck.time !== task.time
+    (taskToCheck) => 
+      taskToCheck.text !== task.text || 
+      taskToCheck.date !== task.date || 
+      taskToCheck.time !== task.time
   );
+
   localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
   taskItem.remove();
 }
 
+function editTask(task, taskItem) {
+  const taskTextInput = document.createElement("input");
+  taskTextInput.type = "text";
+  taskTextInput.value = task.text;
+  taskTextInput.className = "editable-task";
 
+  const taskDateInput = document.createElement("input");
+  taskDateInput.type = "date";
+  taskDateInput.value = task.date;
+  taskDateInput.className = "editable-date";
 
+  const taskTimeInput = document.createElement("input");
+  taskTimeInput.type = "time";
+  taskTimeInput.value = task.time;
+  taskTimeInput.className = "editable-time";
+
+  taskItem.appendChild(taskTextInput);
+  taskItem.appendChild(taskDateInput);
+  taskItem.appendChild(taskTimeInput);
+
+  const saveButton = document.createElement("button");
+  saveButton.textContent = "Save";
+  saveButton.className = "save-btn";
+  taskItem.appendChild(saveButton);
+
+  saveButton.addEventListener("click", () => {
+    const updatedText = taskTextInput.value.trim();
+    const updatedDate = taskDateInput.value;
+    const updatedTime = taskTimeInput.value;
+
+    if (!updatedText || !updatedDate || !updatedTime) {
+      alert("Please fill in all fields!");
+      return;
+    }
+
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const updatedTasks = tasks.filter(
+      (taskToEdit) => 
+        taskToEdit.text === task.text && 
+        taskToEdit.date === task.date && 
+        taskToEdit.time === task.time
+        ? { ...taskToEdit, text: updatedText, date: updatedDate, time: updatedTime }
+        : taskToEdit
+    );
+
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+    task.text = updatedText;
+    task.date = updatedDate;
+    task.time = updatedTime;
+    taskItem.innerHTML = `${updatedText} at ${updatedTime} 
+      <button class="edit-btn">Edit</button>
+      <button class="delete-btn">Delete</button>`;
+
+    const editBtn = taskItem.querySelector(".edit-btn");
+    const deleteBtn = taskItem.querySelector(".delete-btn");
+    editBtn.addEventListener("click", () => editTask(task, taskItem));
+    deleteBtn.addEventListener("click", () => deleteTask(task, taskItem));
+
+  });
+}
