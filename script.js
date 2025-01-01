@@ -4,6 +4,7 @@ const dateInput = document.getElementById("date-input");
 const timeInput = document.getElementById("time-input");
 const taskList = document.getElementById("task-list");
 
+
 document.addEventListener("DOMContentLoaded", loadTasks);
 
 taskForm.addEventListener("submit", (e) => {
@@ -182,4 +183,9 @@ function editTask(task, taskItem) {
     deleteBtn.addEventListener("click", () => deleteTask(task, taskItem));
 
   });
+}
+
+
+function searchBar() {
+   
 }
