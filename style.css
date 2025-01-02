@@ -84,6 +84,11 @@ input {
   border-bottom: 1px solid #eee;
 }
 
+.task-button {
+  display: flex;
+  gap: 5px;
+}
+
 .task-content {
   flex: 1;
 }
