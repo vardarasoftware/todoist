@@ -3,6 +3,7 @@ const taskInput = document.getElementById("task-input");
 const dateInput = document.getElementById("date-input");
 const timeInput = document.getElementById("time-input");
 const taskList = document.getElementById("task-list");
+const searchInput = document.getElementById("search-input");
 
 document.addEventListener("DOMContentLoaded", loadTasks);
 
@@ -34,38 +35,34 @@ function saveTask(task) {
   localStorage.setItem("tasks", JSON.stringify(tasks));  
 }
 
+function displayTaskSection(title, tasks) {
+  const sectionHeading = document.createElement("h2");
+  sectionHeading.textContent = title;
+  taskList.appendChild(sectionHeading);
+  
+  tasks.forEach(task => displayTask(task));
+}
+
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   const currentDate = new Date().toISOString().split("T")[0];
 
   const dueTasks = tasks.filter(task => task.date < currentDate);
   const todayTasks = tasks.filter(task => task.date === currentDate);
-  const upcomingTasks = tasks.filter(task => task.date >= currentDate);
+  const upcomingTasks = tasks.filter(task => task.date > currentDate);
 
   taskList.innerHTML = "";
 
   if (dueTasks.length) {
-    const dueHeading = document.createElement("h2");
-    dueHeading.textContent = "Due Tasks";
-    taskList.appendChild(dueHeading);
-
-    dueTasks.forEach(tasks => displayTask(tasks));
+    displayTaskSection("Due Tasks", dueTasks);
   }
 
   if (todayTasks.length) {
-    const todayHeading = document.createElement("h2");
-    todayHeading.textContent = "Today";
-    taskList.appendChild(todayHeading);
-
-    todayTasks.forEach(task => displayTask(task));
+    displayTaskSection("Today Tasks", todayTasks);
   }
 
   if (upcomingTasks.length) {
-    const upcomingHeading = document.createElement("h2");
-    upcomingHeading.textContent = "Upcoming Tasks";
-    taskList.appendChild(upcomingHeading);
-
-    upcomingTasks.forEach(task => displayTask(task));
+    displayTaskSection("Upcoming Tasks", upcomingTasks);
   }
 }
 
@@ -94,14 +91,27 @@ function displayTask(task) {
 
   const taskItem = document.createElement("div");
   taskItem.classList.add("task-item");
-  taskItem.innerHTML = `${task.text} ${formattedTime} 
-    <button class="edit-btn">Edit</button>
-    <button class="delete-btn">Delete</button>`;
-        
-  dateSection.appendChild(taskItem);
 
-  const editBtn = taskItem.querySelector(".edit-btn");
-  const deleteBtn = taskItem.querySelector(".delete-btn");
+  const taskContent = document.createElement("span");
+  taskContent.textContent = `${task.text} ${formattedTime}`;
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("task-button");
+
+  const editBtn = document.createElement("button");
+  editBtn.classList.add("edit-btn");
+  editBtn.textContent = "Edit";
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.textContent = "Delete";
+
+  buttonContainer.appendChild(editBtn);
+  buttonContainer.appendChild(deleteBtn);
+  
+  taskItem.appendChild(taskContent);
+  taskItem.appendChild(buttonContainer);
+  dateSection.appendChild(taskItem);
 
   editBtn.addEventListener("click", () => editTask(task, taskItem));
   deleteBtn.addEventListener("click", () => deleteTask(task, taskItem));
@@ -182,4 +192,34 @@ function editTask(task, taskItem) {
     deleteBtn.addEventListener("click", () => deleteTask(task, taskItem));
 
   });
+}
+
+searchInput.addEventListener("input", handleSearch);
+
+function handleSearch(e) {
+  const searchQuery = e.target.value.toLowerCase();
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  const currentDate = new Date().toISOString().split("T")[0];
+ 
+  const filteredTasks = tasks.filter(task => 
+    task.text.toLowerCase().includes(searchQuery)
+  );
+
+  const dueTasks = filteredTasks.filter(task => task.date < currentDate);
+  const todayTasks = filteredTasks.filter(task => task.date === currentDate);
+  const upcomingTasks = filteredTasks.filter(task => task.date > currentDate);
+
+  taskList.innerHTML = "";
+  
+  if (dueTasks.length) {
+    displayTaskSection("Due Tasks", dueTasks);
+  }
+  
+  if (todayTasks.length) {
+    displayTaskSection("Today", todayTasks);
+  }
+  
+  if (upcomingTasks.length) {
+    displayTaskSection("Upcoming Tasks", upcomingTasks);
+  }
 }
